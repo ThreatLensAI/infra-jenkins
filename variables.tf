@@ -34,50 +34,66 @@ variable "route_table_name" {
   type = string
 }
 
-variable "network_acl_allow_rule_protocol" {
+variable "network_acl_ingress" {
+  type = list(object({
+    protocol = string
+    port     = number
+    number   = number
+    action   = string
+    cidr     = string
+  }))
+}
+
+variable "network_acl_egress" {
+  type = list(object({
+    protocol = string
+    port     = number
+    number   = number
+    action   = string
+    cidr     = string
+  }))
+}
+
+variable "jenkins_ami_filter_name" {
   type = string
 }
 
-variable "network_acl_allow_rule_https_port" {
-  type = number
-}
-
-variable "network_acl_allow_rule_https_number" {
-  type = number
-}
-
-variable "network_acl_allow_rule_http_port" {
-  type = number
-}
-
-variable "network_acl_allow_rule_http_number" {
-  type = number
-}
-
-variable "network_acl_allow_rule_action" {
+variable "jenkins_ami_filter_value" {
   type = string
 }
 
-variable "network_acl_allow_rule_cidr_range" {
+variable "jenkins_security_group_name" {
   type = string
 }
 
-variable "network_acl_deny_all_rule_protocol" {
-  type = number
+variable "jenkins_security_group_ingress_rules" {
+  type = map(object({
+    protocol = string
+    port     = number
+    cidr     = string
+  }))
 }
 
-variable "network_acl_deny_all_rule_number" {
-  type = number
-}
-
-variable "network_acl_deny_all_rule_port" {
-  type = number
-}
-
-variable "network_acl_deny_all_rule_action" {
+variable "ec2_instance_name" {
   type = string
 }
 
-variable "network_acl_deny_all_rule_cidr_range" {
+variable "ec2_instance_type" {
+  type = string
+}
+
+variable "ec2_associate_public_ip_address" {
+  type = bool
+}
+
+variable "ec2_root_volume_size" {
+  type = number
+}
+
+variable "ec2_root_volume_type" {
+  type = string
+}
+
+variable "eip_allocation_id" {
   type = string
 }

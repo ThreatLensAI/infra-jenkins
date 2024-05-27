@@ -6,8 +6,8 @@ resource "aws_vpc" "jenkins_vpc" {
 }
 
 resource "aws_subnet" "jenkins_subnet" {
-  vpc_id     = aws_vpc.jenkins_vpc.id
-  cidr_block = var.subnet_cidr_range
+  vpc_id            = aws_vpc.jenkins_vpc.id
+  cidr_block        = var.subnet_cidr_range
   availability_zone = var.subnet_zone
 
   tags = {
@@ -39,59 +39,29 @@ resource "aws_default_route_table" "jenkins_route_table" {
 resource "aws_default_network_acl" "default" {
   default_network_acl_id = aws_vpc.jenkins_vpc.default_network_acl_id
 
-  subnet_ids = [ aws_subnet.jenkins_subnet.id ]
+  subnet_ids = [aws_subnet.jenkins_subnet.id]
 
-  ingress {
-    protocol   = var.network_acl_allow_rule_protocol
-    rule_no    = var.network_acl_allow_rule_https_number
-    action     = var.network_acl_allow_rule_action
-    cidr_block = var.network_acl_allow_rule_cidr_range
-    from_port  = var.network_acl_allow_rule_https_port
-    to_port    = var.network_acl_allow_rule_https_port
+  dynamic "ingress" {
+    for_each = var.network_acl_ingress
+    content {
+      protocol   = ingress.value.protocol
+      rule_no    = ingress.value.number
+      action     = ingress.value.action
+      cidr_block = ingress.value.cidr
+      from_port  = ingress.value.port
+      to_port    = ingress.value.port
+    }
   }
 
-  ingress {
-    protocol   = var.network_acl_allow_rule_protocol
-    rule_no    = var.network_acl_allow_rule_http_number
-    action     = var.network_acl_allow_rule_action
-    cidr_block = var.network_acl_allow_rule_cidr_range
-    from_port  = var.network_acl_allow_rule_http_port
-    to_port    = var.network_acl_allow_rule_http_port
-  }
-
-  ingress {
-    protocol = var.network_acl_deny_all_rule_protocol
-    rule_no = var.network_acl_deny_all_rule_number
-    action = var.network_acl_deny_all_rule_action
-    cidr_block = var.network_acl_deny_all_rule_cidr_range
-    from_port = var.network_acl_deny_all_rule_port
-    to_port = var.network_acl_deny_all_rule_port
-  }
-
-  egress {
-    protocol   = var.network_acl_allow_rule_protocol
-    rule_no    = var.network_acl_allow_rule_https_number
-    action     = var.network_acl_allow_rule_action
-    cidr_block = var.network_acl_allow_rule_cidr_range
-    from_port  = var.network_acl_allow_rule_https_port
-    to_port    = var.network_acl_allow_rule_https_port
-  }
-
-  egress {
-    protocol   = var.network_acl_allow_rule_protocol
-    rule_no    = var.network_acl_allow_rule_http_number
-    action     = var.network_acl_allow_rule_action
-    cidr_block = var.network_acl_allow_rule_cidr_range
-    from_port  = var.network_acl_allow_rule_http_port
-    to_port    = var.network_acl_allow_rule_http_port
-  }
-
-  egress {
-    protocol = var.network_acl_deny_all_rule_protocol
-    rule_no = var.network_acl_deny_all_rule_number
-    action = var.network_acl_deny_all_rule_action
-    cidr_block = var.network_acl_deny_all_rule_cidr_range
-    from_port = var.network_acl_deny_all_rule_port
-    to_port = var.network_acl_deny_all_rule_port
+  dynamic "egress" {
+    for_each = var.network_acl_egress
+    content {
+      protocol   = egress.value.protocol
+      rule_no    = egress.value.number
+      action     = egress.value.action
+      cidr_block = egress.value.cidr
+      from_port  = egress.value.port
+      to_port    = egress.value.port
+    }
   }
 }
