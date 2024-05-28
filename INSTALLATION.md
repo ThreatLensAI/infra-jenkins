@@ -14,6 +14,6 @@ To install Terraform, follow these general steps:
 
         $ terraform -version
 
-        Terraform v1.7.3
+        Terraform v1.8.4
         on darwin_arm64
         + provider registry.terraform.io/hashicorp/aws v5.51.1
