@@ -24,9 +24,9 @@ resource "aws_vpc_security_group_egress_rule" "jenkins" {
 }
 
 resource "aws_instance" "jenkins" {
-  ami                         = var.jenkins_ec2.ami
-  subnet_id                   = aws_subnet.jenkins.id
-  instance_type               = var.jenkins_ec2.instance_type
+  ami           = var.jenkins_ec2.ami
+  subnet_id     = aws_subnet.jenkins.id
+  instance_type = var.jenkins_ec2.instance_type
 
   root_block_device {
     volume_size = var.jenkins_ec2.volume.size
