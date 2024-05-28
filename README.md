@@ -6,6 +6,35 @@ This repo contains CSYE7125 Infrastructure as code(Terraform) files to setup Jen
 
 Please follow the installation instructions required for setting up the project [here](INSTALLATION.md).
 
+## Setup Terraform in repo
+
+To set up Terraform within your repository, follow these steps:
+
+1. **Navigate to Repository**: Open a terminal or command prompt and navigate to the root directory of the repository.
+2. **Initialize Terraform**: Run terraform init to initialize Terraform within the repository. This command initializes various Terraform configurations and plugins required for your infrastructure.
+
+        $ terraform init
+        Initializing the backend...
+
+        Initializing provider plugins...
+        - Reusing previous version of hashicorp/aws from the dependency lock file
+        - Installing hashicorp/aws v5.51.1...
+        - Installed hashicorp/aws v5.51.1 (signed by HashiCorp)
+        ...
+        Terraform has been successfully initialized!
+
+3. **Plan Infrastructure Changes**: After initialization, you can run terraform plan to see what changes Terraform will make to your infrastructure. Use -var-file to specify a variable file if needed.
+
+        terraform plan
+
+4. **Apply Infrastructure Changes**: If the plan looks good, you can apply the changes by running terraform apply. Use -var-file to specify a variable file if needed.
+
+        terraform apply
+
+5. **Destroy Infrastructure**: To destroy the infrastructure created by Terraform, you can run terraform destroy. Make sure to review the plan before proceeding.
+
+        terraform destroy
+
 ## What's in  this repo
 
 This repo contains the following files:
@@ -13,7 +42,7 @@ This repo contains the following files:
 - `provider.tf`: This file contains the terraform code to setup Jenkins on AWS.
 - `variables.tf`: This file contains the variables required for the terraform code.
 - `vpc.tf`: This file contains the terraform code to setup the VPC, Subnet, Internet Gateway, Route Table, and Security Group on AWS.
-- `jenkins-ec2.tf`: This file contains the terraform code to setup the EC2 to host Jenkins instance from AMI on AWS.
+- `ec2.tf`: This file contains the terraform code to setup the EC2 to host Jenkins instance from AMI on AWS.
 
 ## Usage
 
