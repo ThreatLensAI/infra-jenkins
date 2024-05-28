@@ -66,6 +66,14 @@ variable "jenkins_security_group_ingress" {
   }))
 }
 
+variable "jenkins_security_group_egress" {
+  type = list(object({
+    protocol = string
+    port     = number
+    cidr     = string
+  }))
+}
+
 variable "jenkins_ec2" {
   type = object({
     ami = string
