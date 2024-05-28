@@ -22,15 +22,15 @@ variable "subnet_zone" {
   type = string
 }
 
-variable "route_cidr" {
-  type = string
-}
-
 variable "internet_gateway_name" {
   type = string
 }
 
 variable "route_table_name" {
+  type = string
+}
+
+variable "route_cidr" {
   type = string
 }
 
@@ -54,46 +54,33 @@ variable "network_acl_egress" {
   }))
 }
 
-variable "jenkins_ami_filter_name" {
-  type = string
-}
-
-variable "jenkins_ami_filter_value" {
-  type = string
-}
-
 variable "jenkins_security_group_name" {
   type = string
 }
 
-variable "jenkins_security_group_ingress_rules" {
-  type = map(object({
+variable "jenkins_security_group_ingress" {
+  type = list(object({
     protocol = string
     port     = number
     cidr     = string
   }))
 }
 
-variable "ec2_instance_name" {
-  type = string
+variable "jenkins_ec2" {
+  type = object({
+    ami = string
+
+    instance_name = string
+    instance_type = string
+
+    associate_public_ip_address = optional(bool, true)
+    volume = object({
+      size = number
+      type = string
+    })
+  })
 }
 
-variable "ec2_instance_type" {
-  type = string
-}
-
-variable "ec2_associate_public_ip_address" {
-  type = bool
-}
-
-variable "ec2_root_volume_size" {
-  type = number
-}
-
-variable "ec2_root_volume_type" {
-  type = string
-}
-
-variable "eip_allocation_id" {
+variable "jenkins_ec2_eip_allocation_id" {
   type = string
 }

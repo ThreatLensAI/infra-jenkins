@@ -1,12 +1,13 @@
-resource "aws_vpc" "jenkins_vpc" {
+resource "aws_vpc" "jenkins" {
   cidr_block = var.vpc_cidr_range
+
   tags = {
     Name = var.vpc_name
   }
 }
 
-resource "aws_subnet" "jenkins_subnet" {
-  vpc_id            = aws_vpc.jenkins_vpc.id
+resource "aws_subnet" "jenkins" {
+  vpc_id            = aws_vpc.jenkins.id
   cidr_block        = var.subnet_cidr_range
   availability_zone = var.subnet_zone
 
@@ -15,20 +16,20 @@ resource "aws_subnet" "jenkins_subnet" {
   }
 }
 
-resource "aws_internet_gateway" "jenkins_internet_gateway" {
-  vpc_id = aws_vpc.jenkins_vpc.id
+resource "aws_internet_gateway" "jenkins" {
+  vpc_id = aws_vpc.jenkins.id
 
   tags = {
     Name = var.internet_gateway_name
   }
 }
 
-resource "aws_default_route_table" "jenkins_route_table" {
-  default_route_table_id = aws_vpc.jenkins_vpc.default_route_table_id
+resource "aws_default_route_table" "jenkins" {
+  default_route_table_id = aws_vpc.jenkins.default_route_table_id
 
   route {
     cidr_block = var.route_cidr
-    gateway_id = aws_internet_gateway.jenkins_internet_gateway.id
+    gateway_id = aws_internet_gateway.jenkins.id
   }
 
   tags = {
@@ -36,10 +37,9 @@ resource "aws_default_route_table" "jenkins_route_table" {
   }
 }
 
-resource "aws_default_network_acl" "default" {
-  default_network_acl_id = aws_vpc.jenkins_vpc.default_network_acl_id
-
-  subnet_ids = [aws_subnet.jenkins_subnet.id]
+resource "aws_default_network_acl" "jenkins" {
+  default_network_acl_id = aws_vpc.jenkins.default_network_acl_id
+  subnet_ids             = [aws_subnet.jenkins.id]
 
   dynamic "ingress" {
     for_each = var.network_acl_ingress
