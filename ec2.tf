@@ -13,10 +13,19 @@ resource "aws_vpc_security_group_ingress_rule" "jenkins" {
   to_port           = var.jenkins_security_group_ingress[count.index].port
 }
 
+resource "aws_vpc_security_group_egress_rule" "jenkins" {
+  count = length(var.jenkins_security_group_egress)
+
+  security_group_id = aws_security_group.jenkins.id
+  cidr_ipv4         = var.jenkins_security_group_egress[count.index].cidr
+  from_port         = var.jenkins_security_group_egress[count.index].port
+  ip_protocol       = var.jenkins_security_group_egress[count.index].protocol
+  to_port           = var.jenkins_security_group_egress[count.index].port
+}
+
 resource "aws_instance" "jenkins" {
   ami                         = var.jenkins_ec2.ami
   subnet_id                   = aws_subnet.jenkins.id
-  associate_public_ip_address = var.jenkins_ec2.associate_public_ip_address
   instance_type               = var.jenkins_ec2.instance_type
 
   root_block_device {
