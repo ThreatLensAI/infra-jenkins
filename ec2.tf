@@ -39,7 +39,7 @@ resource "aws_instance" "jenkins" {
   }
 }
 
-resource "aws_eip_association" "eip_assoc" {
+resource "aws_eip_association" "jenkins" {
   instance_id   = aws_instance.jenkins.id
   allocation_id = var.jenkins_ec2_eip_allocation_id
 }
