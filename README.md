@@ -1,6 +1,6 @@
-# CSYE7125 Jenkins Infra using Terraform
+# Jenkins Infra using Terraform
 
-This repo contains CSYE7125 Infrastructure as code(Terraform) files to setup Jenkins on AWS.
+This repo contains Infrastructure as code(Terraform) files to setup Jenkins on AWS.
 
 ## Installation
 
